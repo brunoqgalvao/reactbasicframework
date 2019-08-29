@@ -1,13 +1,23 @@
-import React, { useState} from 'react'
-import { Link, withRouter } from 'react-router-dom'
-import { Typography, Paper, Avatar, Button, FormControl, Input, InputLabel } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import withStyles from '@material-ui/core/styles/withStyles'
-import { styles } from '../../services/styleProvider'
-import firebase from '../../services/firebaseUtils'
+import React, { useState } from "react";
+import { useAuth } from "../../states/AuthState";
+import { goToLogin } from '../../services/dynamicRouting';
+import {
+  Typography,
+  Paper,
+  Avatar,
+  Button,
+  FormControl,
+  Input,
+  InputLabel
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { styles } from "../../services/styleProvider";
 
 function Register(props) {
+  
   const { classes } = props;
+  const { register } = useAuth();
 
   // I'm produce state using useState.
   // The second parameter that will keep the first parameter value will change the value.
@@ -16,11 +26,12 @@ function Register(props) {
   const [name, setName] = useState("");
 
   //When the form is submitted it will run
-  function onSubmit(e) {
+  function onRegister(e) {
     e.preventDefault(); //blocks the postback event of the page
     console.log("email: " + email);
     console.log("password: " + password);
     console.log("name: " + name);
+    register(name, email, password);
   }
 
   return (
@@ -32,7 +43,7 @@ function Register(props) {
         <Typography component="h1" variant="h5">
           Register Account
         </Typography>
-        <form className={classes.form} onSubmit={onSubmit}>
+        <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="name">Name</InputLabel>
             {/* When the name field is changed, setName will run and assign the name to the value in the input. */}
@@ -69,7 +80,6 @@ function Register(props) {
             />
           </FormControl>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
@@ -79,13 +89,11 @@ function Register(props) {
             Register
           </Button>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="secondary"
-            component={Link}
-            to="/login"
             className={classes.submit}
+            onClick={goToLogin}
           >
             Go back to Login
           </Button>
@@ -93,16 +101,6 @@ function Register(props) {
       </Paper>
     </main>
   );
-
-  async function onRegister() {
-    try {
-      //The register in the Firebase class is running with useState data.
-      await firebase.register(name, email, password);
-      props.history.replace("/dashboard");
-    } catch (err) {
-      alert(err.message);
-    }
-  }
 }
 
-export default withRouter(withStyles(styles)(Register))
+export default withStyles(styles)(Register);

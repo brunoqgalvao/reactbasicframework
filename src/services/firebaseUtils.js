@@ -37,19 +37,18 @@ async register(name,email,pass){
   //We've updated the username of the register result.
   return this.auth.currentUser.updateProfile({
       displayName:name
-  })
-}
-addFruit(fruit){
-  //user presence control
-  if(!this.auth.currentUser){
-      return alert('Not authorized')
-  }
+  })}
+// addFruit(fruit){
+//   //user presence control
+//   if(!this.auth.currentUser){
+//       return alert('Not authorized')
+//   }
 
-  //Adding documents to the collection of pckurdu
-  return this.db.doc(`pckurdu/${this.auth.currentUser.uid}`).set({
-      fruit:fruit
-  })
-}
+//   //Adding documents to the collection of pckurdu
+//   return this.db.doc(`pckurdu/${this.auth.currentUser.uid}`).set({
+//       fruit:fruit
+//   })
+// }
 }
 
 export default new Firebase()
