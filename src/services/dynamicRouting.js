@@ -12,3 +12,10 @@ export const goToHome = () => {
   console.log('going to home');
   history.push(`/`);
 }
+export const goToDashboard = () => {
+  history.push(`/dashboard`);
+}
+
+export const goToLogout = () => {
+  history.push(`/logout`);
+}

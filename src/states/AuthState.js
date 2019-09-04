@@ -1,42 +1,42 @@
 import React, { useState, useContext, useEffect } from "react";
 import firebase from '../services/firebaseUtils';
 import { goToHome, goToRegister } from '../services/dynamicRouting';
+import { useAlert } from './AlertState';
 
 
 const AuthState = props => {
-  
+
+  const alert = useAlert();
+
+  // integrate login, register and logout with firebase
+  // build firebase listener for changes on useffect
+  // if not firebase, should hold a token in localStorage and check for changes somehow
+
   const initialState = {
     user: null,
     isAuth:false,
     credential:null,
-  }
+    authLoading:true
+    }
 
   const [state, setState] = useState(initialState);
 
   async function login(email,password) {
     try {
       const res = await firebase.login(email, password);
-      console.log(res)
-      const user = {
-        email: res.user.email,
-        name: res.user.displayName,
-        token: res.user,
-        credential: res.credential,
-        id: res.user.uid
-      }
-      await setState({...state,user,isAuth:true});
+      updateUser(res.user)
       goToHome();
-
     } catch (err) {
-      alert(err.message);
+      alert.show(err.message);
     }
   }
+
   async function register(name,email,password) {
     try {
       //The register in the Firebase class is running with useState data.
       await firebase.register(name, email, password);
     } catch (err) {
-      alert(err.message);
+      alert.show(err.message);
     }
   }
 
@@ -44,31 +44,50 @@ const AuthState = props => {
     try {
       //The register in the Firebase class is running with useState data.
       await firebase.logout();
+      setState({...initialState, authLoading:false});
     } catch (err) {
-      alert(err.message);
+      alert.show(err.message);
     }
   }
 
+  const updateUser = (firebaseUser) => {
+    if(firebaseUser == null) {
+      setState({...initialState, authLoading:false});
+    } else {
+      const user = {
+        email: firebaseUser.email,
+        name: firebaseUser.displayName,
+        token: firebaseUser,
+        id: firebaseUser.uid,
+        auth:1,
+        firstName :firstName(firebaseUser.displayName)
+      }
+      setState({...state,user,isAuth:true, authLoading:false});
+      return user
+    }
+  }
+  const firstName = (name) => {
+      const firstName = name.substr(0,name.indexOf(' ')); 
+      return firstName;
+  }
 
-  // const onChange = () => {
-  //   console.log('changed');
-  // }
-
-  // useEffect(() => {
-  //   // listen for auth state changes
-  //   const unsubscribe = firebase.auth().onAuthStateChanged(onChange)
-  //   // unsubscribe to the listener when unmounting
-  //   return () => unsubscribe()
-  // }, [])
-
+  useEffect(() => {
+    // listen for auth state changes
+    const unsubscribe = firebase.auth.onAuthStateChanged(user => 
+      user? updateUser(user):updateUser(null)
+    );
+    // unsubscribe to the listener when unmounting
+    return () => unsubscribe()
+  }, [])
 
   return (
     <authContext.Provider
       value={{
         state,
         login,
+        logout,
         register
-      }}
+        }}
     >
       {props.children}
     </authContext.Provider>

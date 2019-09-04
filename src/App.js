@@ -2,14 +2,19 @@ import React from "react";
 import { Container } from "@material-ui/core";
 import States from "./states/States";
 import AppRouter from "./routes/AppRouter";
+import Alert from './components/Alert/Alert'
+import LangButton from './components/Utilities/LangButton/LangButton';
 
 function App() {
+
   return (
     <States>
-        <Container>
+      <Container>
+          <LangButton/>
           <AppRouter>
           </AppRouter>
-        </Container>
+          <Alert/>
+      </Container>
     </States>
   );
 }
