@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../states/AuthState";
+import { useDict } from '../../states/LangState';
 import { goToRegister } from '../../services/dynamicRouting'
 import {
   Typography,
@@ -17,6 +17,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const Login = (props) => {
   const { classes } = props;
+  const dictionary = useDict();
+  console.log(dictionary);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
@@ -38,7 +40,7 @@ const onLogin =() => {
         </Typography>
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <InputLabel htmlFor="email">{dictionary.get('login.emailLabel')}</InputLabel>
             <Input
               id="email"
               name="email"
