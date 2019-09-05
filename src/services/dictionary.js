@@ -37,6 +37,10 @@ export const dictionary = {
     passwordLabel : {
       us: "Password",
       br: "Senha",
+    },
+    title : {
+      us: 'Sign in',
+      br: "Entrar"
     }
   },
   home:{
@@ -65,6 +69,17 @@ export const dictionary = {
         us:"Welcome",
         br:"Bem vindo",
       }
+    }
+  },
+  register:
+  {
+    goBackToLogin: {
+      us:"Go Back to login",
+      br: "Voltar para o Login",
+    },
+    name: {
+      us: "Name",
+      br: "Nome",
     }
   }
 }

@@ -36,7 +36,7 @@ const onLogin =() => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+        {dictionary.get('login.title')}
         </Typography>
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
@@ -51,7 +51,9 @@ const onLogin =() => {
             />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password">
+              {dictionary.get('login.passwordLabel')}
+            </InputLabel>
             <Input
               name="password"
               type="password"
@@ -68,7 +70,7 @@ const onLogin =() => {
             className={classes.submit}
             onClick={onLogin}
           >
-            Sign in
+            {dictionary.get('home.login')}
           </Button>
           <Button
             fullWidth
@@ -77,7 +79,7 @@ const onLogin =() => {
             className={classes.submit}
             onClick={goToRegister}
           >
-            Register
+            {dictionary.get('home.register')}
           </Button>
         </form>
       </Paper>

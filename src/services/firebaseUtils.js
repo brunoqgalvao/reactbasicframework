@@ -34,12 +34,13 @@ class Firebase {
     //firebase logout function
     return this.auth.signOut();
   }
-  async register(name, email, pass) {
+  async register(name, email, pass, photoUrl = "") {
     //firebase register function
     await this.auth.createUserWithEmailAndPassword(email, pass);
     //We've updated the username of the register result.
     return this.auth.currentUser.updateProfile({
-      displayName: name
+      displayName: name,
+      photoURL:photoUrl,
     });
   }
 

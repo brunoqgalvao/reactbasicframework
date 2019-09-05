@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../../states/AuthState";
+import { useDict } from './../../states/LangState'
 import { goToLogin } from '../../services/dynamicRouting';
+import MyAvatarEditor from './AvatarEditor/MyAvatarEditor'
 import {
   Typography,
   Paper,
@@ -17,6 +19,7 @@ import { styles } from "../../services/styleProvider";
 function Register(props) {
   
   const { classes } = props;
+  const dictionary = useDict();
   const { register } = useAuth();
 
   // I'm produce state using useState.
@@ -24,6 +27,7 @@ function Register(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [profilePic, setProfilePic] = useState("");
 
   //When the form is submitted it will run
   function onRegister(e) {
@@ -41,11 +45,11 @@ function Register(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Register Account
+          {dictionary.get('home.register')}
         </Typography>
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="name">Name</InputLabel>
+            <InputLabel htmlFor="name">{dictionary.get('register.name')}</InputLabel>
             {/* When the name field is changed, setName will run and assign the name to the value in the input. */}
             <Input
               id="name"
@@ -57,7 +61,7 @@ function Register(props) {
             />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <InputLabel htmlFor="email">{dictionary.get('login.emailLabel')}</InputLabel>
             {/* When the e-mail field is changed, setEmail will run and assign the e-mail to the value in the input. */}
             <Input
               id="email"
@@ -68,7 +72,7 @@ function Register(props) {
             />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password">{dictionary.get('login.passwordLabel')}</InputLabel>
             {/* When the password field is changed, setPassword will run and assign the password to the value in the input. */}
             <Input
               name="password"
@@ -79,6 +83,9 @@ function Register(props) {
               onChange={e => setPassword(e.target.value)}
             />
           </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <MyAvatarEditor/>
+          </FormControl>
           <Button
             fullWidth
             variant="contained"
@@ -86,7 +93,7 @@ function Register(props) {
             onClick={onRegister}
             className={classes.submit}
           >
-            Register
+            {dictionary.get('home.register')}
           </Button>
           <Button
             fullWidth
@@ -95,7 +102,7 @@ function Register(props) {
             className={classes.submit}
             onClick={goToLogin}
           >
-            Go back to Login
+            {dictionary.get('register.goBackToLogin')}
           </Button>
         </form>
       </Paper>

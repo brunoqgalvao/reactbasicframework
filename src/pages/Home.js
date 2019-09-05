@@ -20,7 +20,10 @@ const Home = props => {
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}></Avatar>
+        <Avatar className={classes.avatar}>
+          <i class="far fa-clock"></i>
+        </Avatar>
+
         <Typography component="h1" variant="h5">
           {!isAuth ? dictionary.get('home.greeting.loggedout') : `${dictionary.get('home.greeting.loggedin')} ${user.firstName}`}
         </Typography>
