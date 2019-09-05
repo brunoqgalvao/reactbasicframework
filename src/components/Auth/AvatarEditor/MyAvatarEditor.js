@@ -1,7 +1,14 @@
 import React, { useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Button, Paper, Container, Grid } from "@material-ui/core";
+import {
+  Button,
+  Paper,
+  Container,
+  Grid,
+  Slider,
+  Tooltip
+} from "@material-ui/core";
 import { styles } from "../../../services/styleProvider";
 import { flexbox } from "@material-ui/system";
 
@@ -10,10 +17,12 @@ const MyAvatarEditor = props => {
 
   let editor = useRef();
   const [image, setImage] = React.useState();
+  const [scale, setScale] = React.useState(1);
 
   const onClickSave = () => {
     if (editor) {
-      const canvas = editor.getImage();
+      console.log(editor);
+      const canvas = editor.current.getImage();
       console.log(canvas);
     }
   };
@@ -35,22 +44,43 @@ const MyAvatarEditor = props => {
         <AvatarEditor
           ref={editor}
           image={image}
-          width={250}
-          height={250}
-          border={50}
+          width={200}
+          height={200}
+          border={25}
+          scale={scale}
           borderRadius={1000}
         />
-        <Grid justify="space-between">
+        <Grid
+          container
+          alignItems="center"
+          justify="space-evenly"
+          direction="row"
+        >
+          <i class="far fa-image"></i>
+          <Slider
+            min={0.8}
+            max={1.8}
+            step={0.005}
+            onChange={(e, value) =>setScale(value)}
+            value={scale}
+            style={{ width: "80%" }}
+          />
+          <i class="far fa-image fa-2x"></i>
+        </Grid>
+        <Grid container justify="space-between">
           <label htmlFor="raised-button-file">
             <Button
-              variant="contained"
+              variant={image == null ? "contained" : "outlined"}
               color="secondary"
+              component="span"
               className={classes.button}
             >
               Upload
             </Button>
           </label>
-          {image == null ? ("") : (
+          {image == null ? (
+            ""
+          ) : (
             <Button
               variant="contained"
               color="primary"
