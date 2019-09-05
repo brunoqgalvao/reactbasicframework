@@ -28,5 +28,13 @@ export const styles = theme => ({
   },
   submit: {
       marginTop: theme.spacing(3),
+  },
+  alertTitle: {
+      paddingBottom:theme.spacing(0),
+      textAlign:"center",
+  },
+  modalStyle : {
+      width:"80%",
+      
   }
 });
