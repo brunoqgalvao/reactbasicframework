@@ -1,7 +1,6 @@
 
 
 import React, { useState, useContext} from 'react'
-import uuid from 'uuid';
 
 const ModalState = (props) => {
 
@@ -15,7 +14,7 @@ const ModalState = (props) => {
     return id;
   }
   const isOpen = (id) => {
-    const check = modals.filter(modal => modal.id == id).length > 0;
+    const check = modals.filter(modal => modal.id === id).length > 0;
     return check;
   }
 

@@ -38,9 +38,21 @@ export const dictionary = {
       us: "Password",
       br: "Senha",
     },
+    confirmPasswordLabel: {
+      us: "Confirm Password",
+      br: "Confirmar Senha",
+    },
+    addProfilePicture:{
+      us: "Add Profile Picture",
+      br: "Adicionar Foto de Perfil"
+    },
     title : {
       us: 'Sign in',
       br: "Entrar"
+    },
+    confirmPasswordDoesntMatch:{
+      us: "Password doesn't match with confirmation",
+      br: "Senha não confere com a confirmação",
     }
   },
   home:{

@@ -15,13 +15,19 @@ const Home = props => {
   const { classes } = props;
   const { isAuth, user } = useSession();
   const dictionary = useDict();
-
+  const [photoURL, setPhotoURL] = React.useState("");
   
+  React.useEffect(()=>{
+    if(user != null){
+      setPhotoURL(user.photoURL);
+    }
+  },[user])
+
   return (
     <main className={classes.main}>
       <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <i class="far fa-clock"></i>
+        <Avatar className={classes.avatar} src={photoURL}>
+          {photoURL?"":<i className="fas fa-clock"></i>}
         </Avatar>
 
         <Typography component="h1" variant="h5">

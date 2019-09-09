@@ -39,6 +39,24 @@ const AuthState = props => {
       alert.show(err.message);
     }
   }
+  async function uploadAndSaveProfilePicture(blob) {
+    try{
+      const url = await firebase.uploadProfilePicture(blob);
+      const user = await firebase.updatePhotoUrl(url);
+      return user;
+    } catch (err) {
+      alert.show(err.message);
+    }
+  }
+
+  async function registerWithPicture(name,email,password,blob) {
+    try{
+      await register(name,email,password);
+    } catch(err){
+      return 
+    }
+    await uploadAndSaveProfilePicture(blob);
+  }
 
   async function logout( ) {
     try {
@@ -59,6 +77,7 @@ const AuthState = props => {
         name: firebaseUser.displayName,
         token: firebaseUser,
         id: firebaseUser.uid,
+        photoURL: firebaseUser.photoURL,
         auth:1,
         firstName :firstName(firebaseUser.displayName)
       }
@@ -67,8 +86,14 @@ const AuthState = props => {
     }
   }
   const firstName = (name) => {
+    if(name){
       const firstName = name.substr(0,name.indexOf(' ')); 
-      return firstName;
+      if(firstName.length != 0){
+        return firstName;
+      }
+    } else {
+      return name;
+    }
   }
 
   useEffect(() => {
@@ -86,7 +111,8 @@ const AuthState = props => {
         state,
         login,
         logout,
-        register
+        register,
+        registerWithPicture,
         }}
     >
       {props.children}

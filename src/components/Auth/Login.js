@@ -18,14 +18,11 @@ import withStyles from "@material-ui/core/styles/withStyles";
 const Login = (props) => {
   const { classes } = props;
   const dictionary = useDict();
-  console.log(dictionary);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
 
 const onLogin =() => {
-    console.log(email);
-    console.log(password);
     login(email,password);
 }
 

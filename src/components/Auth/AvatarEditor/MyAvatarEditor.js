@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
+import { useModal } from "../../../states/ModalState";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {
   Button,
@@ -14,16 +15,19 @@ import { flexbox } from "@material-ui/system";
 
 const MyAvatarEditor = props => {
   const { classes } = props;
+  const  modal  = useModal();
 
   let editor = useRef();
   const [image, setImage] = React.useState();
   const [scale, setScale] = React.useState(1);
+  const [imageBlob, setImageBlob] = props.imageBlobState;
 
-  const onClickSave = () => {
+  const onClickSave = async () => {
     if (editor) {
-      console.log(editor);
-      const canvas = editor.current.getImage();
-      console.log(canvas);
+      const canvas = editor.current.getImage().toDataURL();
+      const blob =  await fetch(canvas).then(res => res.blob());
+      setImageBlob(blob);
+      modal.close("avatarEditor");
     }
   };
   const handleFileInput = e => {

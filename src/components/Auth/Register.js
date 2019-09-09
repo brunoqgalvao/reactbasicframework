@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../states/AuthState";
+import { useAlert } from "../../states/AlertState";
 import { useModal } from "../../states/ModalState";
 import { useDict } from "./../../states/LangState";
 import { goToLogin } from "../../services/dynamicRouting";
@@ -21,22 +22,33 @@ import { styles } from "../../services/styleProvider";
 function Register(props) {
   const { classes } = props;
   const dictionary = useDict();
-  const { register } = useAuth();
+  const  alert  = useAlert();
+  const { register, registerWithPicture } = useAuth();
   const modal = useModal();
 
   // I'm produce state using useState.
   // The second parameter that will keep the first parameter value will change the value.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [imageBlob, setImageBlob] = React.useState("");
 
   //When the form is submitted it will run
   function onRegister(e) {
     e.preventDefault(); //blocks the postback event of the page
-    console.log("email: " + email);
-    console.log("password: " + password);
-    console.log("name: " + name);
-    register(name, email, password);
+    if(validPasswords(password,confirmPassword)){
+      imageBlob?
+        registerWithPicture(name, email, password,imageBlob):
+        register(name,email,password);
+    } else {
+      alert.show(dictionary.get("login.confirmPasswordDoesntMatch"));
+    }
+  }
+
+  // how to i put this is some sort of middleware? should this be on backend? think so.
+  function validPasswords(password,confirmPassword) {
+    return password === confirmPassword
   }
 
   return (
@@ -90,6 +102,20 @@ function Register(props) {
               onChange={e => setPassword(e.target.value)}
             />
           </FormControl>
+          <FormControl margin="normal" required fullWidth>
+            <InputLabel htmlFor="confirm-password">
+              {dictionary.get("login.confirmPasswordLabel")}
+            </InputLabel>
+            {/* When the password field is changed, setPassword will run and assign the password to the value in the input. */}
+            <Input
+              name="confirm-password"
+              type="password"
+              id="confirm-password"
+              autoComplete="off"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+            />
+          </FormControl>
           <Button
             fullWidth
             variant="outlined"
@@ -97,14 +123,14 @@ function Register(props) {
             className={classes.button}
             onClick={() => modal.open("avatarEditor")}
           >
-            Add Profile Picture
+            {dictionary.get("login.addProfilePicture")}
           </Button>
           <Modal
             className={styles.main}
             open={modal.isOpen("avatarEditor")}
             onClose={() => modal.close("avatarEditor")}
           >
-            <MyAvatarEditor />
+            <MyAvatarEditor imageBlobState={[imageBlob,setImageBlob]}/>
           </Modal>
           <Button
             fullWidth

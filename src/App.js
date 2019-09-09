@@ -20,3 +20,7 @@ function App() {
 }
 
 export default App;
+
+
+//BUG:
+// when registering, name doesn't get uploaded in time, for some reason, it gives null
